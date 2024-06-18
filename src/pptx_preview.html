@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/pptxjs-assets/pptxjs.css">
+    <link rel="stylesheet" href="/pptxjs-assets/nv.d3.min.css">
+    <script type="text/javascript" src="/pptxjs-assets/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/jszip.min.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/filereader.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/d3.min.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/nv.d3.min.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/pptxjs.min.js"></script>
+    <script type="text/javascript" src="/pptxjs-assets/divs2slides.js"></script>
+    <script src="/config/index.js" type="module"></script>
+</head>
+
+<body>
+   
+    <div id="your_div_id_result"></div>
+</body>
+
+<script type="text/javascript">
+    setTimeout(() => {
+        const params = new URLSearchParams(window.location.search)
+        let docId = params.get('id')
+        let blob = null
+        const fetchRes = fetch(
+            window.SITE_CONFIG['BASE_URL'] + '/gateway/ksp-kg/doc/publicDoc/reviewPublicDoc' + '?id=' + docId,
+            {
+                method: 'GET',
+                headers: { 'X-Portal-Token': 'abb233940d2ff469747519c745d653fa' }
+            }
+        ).then(res => {
+            res.blob().then(r => {
+                blob = r
+                const blobWithType = new Blob([blob], {
+                    type: 'application/ vnd.openxmlformats-officedocument.presentationml.presentation'
+                })
+                const fileurl = URL.create0bjectURL(blobwithType)
+                $("#your_div_id_result").pptxToHtml({
+                    pptxFileUrl: fileurl, slidesScale: "0", slideMode: false, keyBoardShortCut: false
+                })
+            })
+        })
+    }, 100);
+</script>
