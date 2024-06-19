@@ -6,6 +6,7 @@ import 'element-plus/theme-chalk/el-loading.css'
 // 引入组件
 import Layout from '@/views/Layout/index.vue'
 import Login from '@/views/Login/index.vue'
+import Test from '@/views/test/index.vue'
 import Home from '@/views/Home/index.vue'
 
 // 引入模块路由
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     }
   ]
   // 路由行为的配置项 切换路由时自动滚回顶部
