@@ -9,6 +9,22 @@ import router from './router'
 
 const app = createApp(App)
 
+import { ElMessage } from 'element-plus'
+
+// $copy 全局复制
+import useClipboard from 'vue-clipboard3'
+const { toClipboard } = useClipboard()
+console.log(app.config.globalProperties);
+app.config.globalProperties.$copy = async (text) => {
+    try {
+        await toClipboard(text)
+        ElMessage.success('复制成功')
+    } catch (error) {
+        ElMessage.warning('复制失败: ' + error.message)
+    }
+}
+
+
 // 引入并注册自定义的图片懒加载组件
 import { lazyImgPlugin } from '@/directives/index'
 app.use(lazyImgPlugin)
