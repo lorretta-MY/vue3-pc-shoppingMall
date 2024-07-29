@@ -11,10 +11,13 @@ const app = createApp(App)
 
 import { ElMessage } from 'element-plus'
 
+// 引入help
+import helper from '@/utils/index.js'
+app.config.globalProperties.$helper = helper
+
 // $copy 全局复制
 import useClipboard from 'vue-clipboard3'
 const { toClipboard } = useClipboard()
-console.log(app.config.globalProperties);
 app.config.globalProperties.$copy = async (text) => {
     try {
         await toClipboard(text)

@@ -2,8 +2,8 @@
     <div class="my-list-wrap">
         <!-- 输入框 -->
         <div class="operate-header">
-            <el-input v-model.trim="addText" style="max-width: 600px; height: 36px" placeholder="请输入您的待办事项"
-                class="input-with-select">
+            <el-input v-model.trim="addText" @keydown.enter="handleListAdd" style="max-width: 600px; height: 36px"
+                placeholder="请输入您的待办事项" class="input-with-select">
                 <template #append>
                     <el-button type="primary" @click="handleListAdd">新增</el-button>
                 </template>
@@ -39,7 +39,7 @@
                             编辑
                         </el-button>
                         <el-popconfirm title="确认删除这条信息吗?" confirm-button-text="确认" cancel-button-text="取消"
-                            @confirm="handleDeleteAction(scope.row, 1)">
+                            @confirm="handleDeleteAction(scope.row)">
                             <template #reference>
                                 <el-button link type="danger" size="small">删除</el-button>
                             </template>
@@ -66,12 +66,26 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, getCurrentInstance } from 'vue'
 import { ElMessage, } from 'element-plus'
 import dayjs from 'dayjs';
+
+const { proxy: instance } = getCurrentInstance()
+
 const addText = ref('')
 
-// 分页相关
+// 校验是否重复
+const validateDateRepeat = (title) => {
+    let flag = false
+    tableData.value.map((item) => {
+        if (item.title === title) {
+            flag = true
+        }
+    })
+    return flag
+}
+
+// 分页相关 前端分页
 const pageNum = ref(1)
 const pageSize = ref(6)
 const total = computed(() => tableData.value.length)
@@ -85,7 +99,56 @@ const tableData = ref([
         username: 'RITA'
     }
 ])
-// 修改
+
+// 1、新增
+const handleListAdd = () => {
+
+    if (!addText.value) return
+    // 校验是否重复
+    if (validateDateRepeat(addText.value)) {
+        ElMessage({
+            message: '您输入的数据有重复，请重新输入。',
+            type: 'warning',
+        })
+        return
+    }
+    tableData.value.unshift({
+        title: addText.value,
+        content: '自定义标题内容',
+        tags: '初始化',
+        date: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        username: instance.$helper.userName()
+    })
+    addText.value = ''
+}
+
+// 2、删除
+const userSelectList = ref([])
+const handleSelectionChange = (data) => {
+    userSelectList.value = data.map(item => item.title)
+}
+// 批量删除
+const handleBatchDel = () => {
+    if (!userSelectList.value.length) {
+        ElMessage({
+            message: '请至少选择一条数据',
+            type: 'warning',
+        })
+        return
+    }
+    delAction(userSelectList.value)
+}
+// 单条删除
+const handleDeleteAction = (row) => {
+    delAction([row.title])
+}
+const delAction = (ids) => {
+    tableData.value = tableData.value.filter((a) => {
+        return !ids.some((b) => a.title === b)
+    })
+}
+
+// 3、修改
 const questionInput = ref('')
 const cacheTitle = ref('')
 const handleClick = (row) => {
@@ -120,64 +183,6 @@ const cancelEdit = (row) => {
     row['isEdit'] = false
 }
 
-// 新增
-const handleListAdd = () => {
-    if (!addText.value) return
-    // 校验是否重复
-    if (validateDateRepeat(addText.value)) {
-        ElMessage({
-            message: '您输入的数据有重复，请重新输入。',
-            type: 'warning',
-        })
-        return
-    }
-    tableData.value.unshift({
-        title: addText.value,
-        content: '自定义标题内容',
-        tags: '初始化',
-        date: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        username: 'RITA'
-    })
-}
-// 校验是否重复
-const validateDateRepeat = (title) => {
-    let flag = false
-    tableData.value.map((item) => {
-        if (item.title === title) {
-            flag = true
-        }
-    })
-    return flag
-}
-// 删除
-const userSelectList = ref([])
-const handleBatchDel = () => {
-    if (!userSelectList.value.length) {
-        ElMessage({
-            message: '请至少选择一条数据',
-            type: 'warning',
-        })
-        return
-    }
-    handleDeleteAction({}, 2)
-}
-
-const handleSelectionChange = (data) => {
-    userSelectList.value = data.map(item => item.title)
-}
-const handleDeleteAction = (row, delType) => {
-    // 1 删除 2批量删除
-    if (delType === 1) {
-        delAction([row.title])
-    } else {
-        delAction(userSelectList.value)
-    }
-}
-const delAction = (ids) => {
-    tableData.value = tableData.value.filter((a) => {
-        return !ids.some((b) => a.title === b)
-    })
-}
 </script>
 
 <style lang="scss" scoped>
