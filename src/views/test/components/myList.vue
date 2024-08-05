@@ -5,10 +5,10 @@
             <el-input v-model.trim="addText" @keydown.enter="handleListAdd" style="max-width: 600px; height: 36px"
                 placeholder="请输入您的待办事项" class="input-with-select">
                 <template #append>
-                    <el-button type="primary" @click="handleListAdd">新增</el-button>
+                    <el-button type=" primary" @click="handleListAdd">新增</el-button>
                 </template>
             </el-input>
-            <el-button @click="handleBatchDel" style=" height: 36px">批量删除</el-button>
+            <el-button @click="handleBatchDel" style=" height: 36px" v-permission="'savePublic1'">批量删除</el-button>
         </div>
 
         <!-- 列表 -->

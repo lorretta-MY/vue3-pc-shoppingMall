@@ -27,6 +27,10 @@ app.config.globalProperties.$copy = async (text) => {
     }
 }
 
+// 引入并注册自定义的权限判断指令
+import { hasPermission } from '@/directives/index'
+app.use(hasPermission)
+
 
 // 引入并注册自定义的图片懒加载组件
 import { lazyImgPlugin } from '@/directives/index'
