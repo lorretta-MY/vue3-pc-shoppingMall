@@ -6,7 +6,7 @@
         <template #error="{ retry }">
             <div class="base-infinite-loading-component__error">
                 <span>加载失败，</span>
-                <span style="color: blue" @click.stop="retry">点击重试</span>
+                <a href="javascript:" class="retry-btn" @click.stop="retry">点击重试</a>
             </div>
         </template>
     </InfiniteLoading>
@@ -43,10 +43,36 @@ const load = async ($state) => {
 
 <style lang="scss" scoped>
 .base-infinite-loading-component {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    color: #666;
+
+
+    :deep(.container) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #3a77f0;
+            border-right-color: transparent;
+        }
+    }
+
     &__tips {
         text-align: center;
-        padding-top: 20px;
         color: #666;
+    }
+
+    &__error {
+        .retry-btn {
+            color: #3a77f0;
+            font-weight: 600
+        }
     }
 }
 </style>
