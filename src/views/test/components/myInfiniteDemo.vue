@@ -1,17 +1,23 @@
 <template>
-    <el-scrollbar height="380px">
-        <div class="my-infinite-list-wrap">
-            <ul class="card-list">
-                <li class="card-item" :class="i.active ? 'active' : ''" v-for="i in subCategoryGoodsList" :key="i.id"
-                    @mouseenter="handleCardActive(i)" @mouseleave="handleCardMoveOut">
-                    <el-tag type="success">{{ i.desc }}</el-tag>
-                    <span class="txt">{{ i.name }}</span>
-                </li>
-            </ul>
-        </div>
-        <!-- 无限加载组件 -->
-        <baseInfiniteLoading :identifier="`{refreshKey}`" :handle-load="loadMore" />
-    </el-scrollbar>
+  <el-scrollbar height="600px">
+    <div class="my-infinite-list-wrap">
+      <ul class="card-list">
+        <li
+          class="card-item"
+          :class="i.active ? 'active' : ''"
+          v-for="i in subCategoryGoodsList"
+          :key="i.id"
+          @mouseenter="handleCardActive(i)"
+          @mouseleave="handleCardMoveOut"
+        >
+          <el-tag type="success">{{ i.desc }}</el-tag>
+          <span class="txt">{{ i.name }}</span>
+        </li>
+      </ul>
+    </div>
+    <!-- 无限加载组件 -->
+    <baseInfiniteLoading :identifier="`{refreshKey}`" :handle-load="loadMore" />
+  </el-scrollbar>
 </template>
 
 <script lang="ts" setup>
@@ -24,7 +30,7 @@ import baseInfiniteLoading from "./baseInfiniteLoading.vue";
 const { proxy: instance } = getCurrentInstance();
 
 const nextPage = ref(1);
-const pageSize = ref(100);
+const pageSize = ref(10);
 const subCategoryGoodsList = ref([]);
 
 const getList = async (pageNum) => {
@@ -63,7 +69,7 @@ const loadMore = async () => {
   const { list, total } = await getList(nextPage.value);
   subCategoryGoodsList.value.push(...list);
   nextPage.value += 1;
-  return subCategoryGoodsList.value.length >= total
+  return subCategoryGoodsList.value.length >= total;
 };
 
 onMounted(() => {
@@ -96,30 +102,40 @@ const handleCardMoveOut = () => {
 
 <style lang="scss" scoped>
 .my-infinite-list-wrap {
-    background-color: rgb(248, 250, 252);
-    padding: 20px;
+  //   height: calc(100vh - 160px);
+  // overflow-y: auto;
+  background-color: rgb(248, 250, 252);
+  padding: 20px;
 
-    ul.card-list {
-        li.card-item {
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            border: 1px solid transparent;
+  ul.card-list {
+    li.card-item {
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      border: 1px solid transparent;
 
-            &.active {
-                border: 1px solid #27ba9b;
-            }
+      :deep(.el-tag) {
+        max-width: 60%;
+        overflow: hidden;
 
-            span.txt {
-                font-weight: 600;
-                margin-left: 6px;
-            }
-
-            // width: 50%;
-            // margin-left: 12px;
+        .el-tag__content {
+          width: 100%;
         }
+
+        word-break: break-all;
+      }
+
+      &.active {
+        border: 1px solid #27ba9b;
+      }
+
+      span.txt {
+        font-weight: 600;
+        margin-left: 6px;
+      }
     }
+  }
 }
 </style>

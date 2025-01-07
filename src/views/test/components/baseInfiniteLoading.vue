@@ -1,20 +1,30 @@
 <template>
-    <InfiniteLoading v-bind="attrs" @infinite="load" class="base-infinite-loading-component">
-        <template #complete>
-            <div class="base-infinite-loading-component__tips">没有更多了...</div>
-        </template>
-        <template #error="{ retry }">
-            <div class="base-infinite-loading-component__error">
-                <span>加载失败，</span>
-                <a href="javascript:" class="retry-btn" @click.stop="retry">点击重试</a>
-            </div>
-        </template>
-    </InfiniteLoading>
+  <InfiniteLoading
+    v-bind="attrs"
+    @infinite="load"
+    class="base-infinite-loading-component"
+  >
+    <template #complete>
+      <div class="base-infinite-loading-component__tips">没有更多了...</div>
+    </template>
+    <template #error="{ retry }">
+      <div class="base-infinite-loading-component__error">
+        <span>加载失败，</span>
+        <a href="javascript:" class="retry-btn" @click.stop="retry"
+          >点击重试
+          <el-icon style="position: relative; top: 2px; font-weight: 600">
+            <Refresh />
+          </el-icon>
+        </a>
+      </div>
+    </template>
+  </InfiniteLoading>
 </template>
 
 <script setup>
 import { computed, ref, getCurrentInstance, onMounted, useAttrs } from "vue";
 import { ElMessage } from "element-plus";
+import { Refresh } from "@element-plus/icons-vue";
 import { getSubCategoryAPI } from "@/api/category";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css"; // required if you're not going to override default slots
@@ -43,36 +53,35 @@ const load = async ($state) => {
 
 <style lang="scss" scoped>
 .base-infinite-loading-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  color: #666;
+
+  :deep(.container) {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 20px;
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #3a77f0;
+      border-right-color: transparent;
+    }
+  }
+
+  &__tips {
+    text-align: center;
     color: #666;
+  }
 
-
-    :deep(.container) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #3a77f0;
-            border-right-color: transparent;
-        }
+  &__error {
+    .retry-btn {
+      color: #3a77f0;
+      font-weight: 600;
     }
-
-    &__tips {
-        text-align: center;
-        color: #666;
-    }
-
-    &__error {
-        .retry-btn {
-            color: #3a77f0;
-            font-weight: 600
-        }
-    }
+  }
 }
 </style>
