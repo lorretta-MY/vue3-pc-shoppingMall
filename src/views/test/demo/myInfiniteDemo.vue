@@ -24,8 +24,7 @@
 import { computed, ref, getCurrentInstance, onMounted, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { getSubCategoryAPI } from "@/api/category";
-
-import baseInfiniteLoading from "./baseInfiniteLoading.vue";
+import baseInfiniteLoading from "../components/baseInfiniteLoading.vue";
 
 const { proxy: instance } = getCurrentInstance();
 

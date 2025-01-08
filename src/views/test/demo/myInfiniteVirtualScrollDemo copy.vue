@@ -1,25 +1,29 @@
 <template>
-  <el-scrollbar height="600px">
-    <div class="my-infinite-list-wrap">
-      <baseVirtualScroll
-        :list="mockPageGoodsList"
-        :empty="mockPageGoodsList.length == 0 ? true : false"
-        :itemMainSize="60"
-      >
-        <template #item="{ item, active }">
-          <div class="card-item">
-            <el-tag type="info">{{ item.desc }}</el-tag>
-            <span class="txt">{{ item.name }}</span>
-          </div>
-        </template>
-      </baseVirtualScroll>
-    </div>
-    <!-- 无限加载组件 -->
-    <baseInfiniteLoading
-      :identifier="`{mockRefreshKey}`"
-      :handle-load="loadMore"
-    />
-  </el-scrollbar>
+  <div class="my-infinite-list-wrap">
+    <baseVirtualScroll
+      v-if="goodsList.length > 0"
+      :list="goodsList"
+      :grid-number="2"
+      :gap="12"
+      :item-main-size="60"
+      :empty="goodsList.length == 0 ? true : false"
+      key-field="name"
+    >
+      <template #item="{ item, active }">
+        <div class="card-item">
+          <el-tag type="success">{{ item.desc }}</el-tag>
+          <span class="txt">{{ item.name }}</span>
+        </div>
+      </template>
+    </baseVirtualScroll>
+  </div>
+  <!-- 无限加载组件 -->
+  <baseInfiniteLoading
+    v-if="goodsList.length > 0"
+    :identifier="`{mockRefreshKey}`"
+    :handle-load="loadMore"
+  />
+  <el-empty v-else description="暂无数据" />
 </template>
 
 <script lang="ts" setup>
@@ -27,8 +31,8 @@ import { computed, ref, getCurrentInstance, onMounted, watch } from "vue";
 import { descriptionProps, ElMessage } from "element-plus";
 import { getSubCategoryAPI } from "@/api/category";
 
-import baseInfiniteLoading from "./baseInfiniteLoading.vue";
-import baseVirtualScroll from "./baseVirtualScroll.vue";
+import baseInfiniteLoading from "../components/baseInfiniteLoading.vue";
+import baseVirtualScroll from "../components/baseVirtualScroll.vue";
 
 import { useRoute } from "vue-router";
 const route = useRoute();
@@ -50,7 +54,7 @@ const loadMore = async () => {
   await new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
-    }, 500);
+    }, 50);
   });
 
   const startIndex = (nextPage.value - 1) * pageSize.value;
@@ -92,10 +96,13 @@ watch(
     refreshList();
   },
   {
-    // deep: true,
+    deep: true,
     immediate: true,
   }
 );
+// onMounted(() => {
+//   getSubCategorGoodsList();
+// });
 </script>
 
 <style lang="scss" scoped>
@@ -107,7 +114,7 @@ watch(
     background-color: #fff;
     border-radius: 12px;
     margin-bottom: 20px;
-    // cursor: pointer;
+    cursor: pointer;
     border: 1px solid transparent;
 
     :deep(.el-tag) {

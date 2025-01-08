@@ -38,7 +38,14 @@
             v-if="!!scope.row.isEdit"
             v-model.trim="questionInput"
           ></el-input>
-          <p v-else>{{ scope.row.title }}</p>
+          <basicTextOverflow
+            v-else
+            :value="scope.row.title"
+            effect="dark"
+            show-copy
+            max-line="2"
+            style="word-break: break-all"
+          />
         </template>
       </el-table-column>
 
@@ -109,6 +116,8 @@ import { computed, ref, getCurrentInstance } from "vue";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 
+import basicTextOverflow from "../components/basicTextOverflow/basicTextOverflow.vue";
+
 const { proxy: instance } = getCurrentInstance();
 
 const addText = ref("");
@@ -131,7 +140,9 @@ const total = computed(() => tableData.value.length);
 
 const tableData = ref([
   {
-    title: "自定义标题",
+    title1:
+      "自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题自定义标题",
+    title: "welcome to rita's world,welcome to 自定义标题自定,自定义标题自定",
     content: "自定义标题内容",
     tags: "初始化",
     date: "2024-07-22 20:21:30",

@@ -1,12 +1,11 @@
 <template>
-    <div class="my-markdown-wrap">
-        <v-md-editor v-model="text" height="100%"></v-md-editor>
-    </div>
-
+  <div class="my-markdown-wrap">
+    <v-md-editor v-model="text" height="100%"></v-md-editor>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 const text = `---
 # frontmatter: https://jekyllrb.com/docs/front-matter/
 layout: post
@@ -68,11 +67,11 @@ $$
 $$
 
 ## Mermaid Diagrams
-`
+`;
 </script>
 
 <style lang="scss" scoped>
 .my-markdown-wrap {
-    margin: 20px;
+  margin: 20px;
 }
 </style>
