@@ -1,12 +1,12 @@
-import { fileURLToPath, URL } from 'node:url'
-import path from 'path'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from "node:url";
+import path from "path";
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
 // 配置 element+ 组件按需加载
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,28 +19,33 @@ export default defineConfig({
   //   }
   // },
   plugins: [
-    vue(),
+    vue({
+      script: {
+        // 开启 defineModel
+        defineModel: true,
+      },
+    }),
     AutoImport({
       // element+ 组件按需加载
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
     }),
     Components({
       resolvers: [
         ElementPlusResolver(
           // 按需定制主题配置 通知ElementPlus使用sass
-          { importStyle: 'sass' }
-        )
-      ]
-    })
+          { importStyle: "sass" }
+        ),
+      ],
+    }),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
       // alias:[{
       //   find: '@',
       //   replacement: path.resolve(_dirname, 'src')
       // }]
-    }
+    },
   },
   css: {
     preprocessorOptions: {
@@ -49,8 +54,8 @@ export default defineConfig({
         additionalData: `
           @use "@/styles/element/index.scss" as *;
           @use "@/styles/var.scss" as *;
-        `
-      }
-    }
-  }
-})
+        `,
+      },
+    },
+  },
+});

@@ -1,6 +1,9 @@
 <template>
   <div class="test-page-wrap">
     <el-tabs type="border-card">
+      <el-tab-pane label="拖拽组件">
+        <myDragList />
+      </el-tab-pane>
       <el-tab-pane label="待办事项清单">
         <myList />
       </el-tab-pane>
@@ -30,6 +33,7 @@
 import codeEditor from "./demo/codeEditor.vue";
 import myMarkdown from "./demo/myMarkdown.vue";
 import myList from "./demo/myList.vue";
+import myDragList from "./demo/myDragList.vue";
 import myInfiniteDemo from "./demo/myInfiniteDemo.vue";
 import myInfiniteVirtualScrollDemo from "./demo/myInfiniteVirtualScrollDemo.vue";
 
@@ -44,7 +48,8 @@ const handleCopy = (val) => {
 <style scoped lang="scss">
 .test-page-wrap {
   padding: 20px;
-  // height: calc(100% - 20px);
-  // overflow: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>

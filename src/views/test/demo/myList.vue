@@ -43,7 +43,7 @@
             :value="scope.row.title"
             effect="dark"
             show-copy
-            max-line="2"
+            :max-line="2"
             style="word-break: break-all"
           />
         </template>
