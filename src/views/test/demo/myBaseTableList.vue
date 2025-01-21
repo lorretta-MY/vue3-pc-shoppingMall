@@ -9,11 +9,19 @@
       style="width: 100%"
       v-loading="isTableLoading"
       :data="tableData"
-      :border="true"
+      :border="false"
+      row-key="id"
       ref="myFilterTableRef"
       @filter-change="handleTableFiltersChange"
       @sort-change="handleTableSortChange"
     >
+      <!-- 折叠子列表 -->
+      <el-table-column type="expand">
+        <!-- 无限加载的子列表 -->
+        <template #default="scope">
+          <myInfiniteVirtualScrollDemo height="240px" :size="5" />
+        </template>
+      </el-table-column>
       <el-table-column label="商品id" width="130">
         <template #default="scope">
           {{ scope.row.id }}
@@ -48,7 +56,7 @@
       <!-- 前端筛选 -->
       <el-table-column
         label="商品价格"
-        width="140"
+        width="120"
         sortable
         :sort-method="sortPrice"
       >
@@ -57,7 +65,7 @@
       <!-- 后端接口入参实现筛选 -->
       <el-table-column
         label="商品序列"
-        width="140"
+        width="120"
         sortable="custom"
         column-key="order"
       >
@@ -161,6 +169,7 @@ import { ElMessage } from "element-plus";
 import { getSubCategoryAPI } from "@/api/category";
 
 import baseHeaderSearchDown from "../components/baseHeaderSearchDown.vue";
+import myInfiniteVirtualScrollDemo from "./myInfiniteVirtualScrollDemo.vue";
 
 const { proxy: instance } = getCurrentInstance();
 

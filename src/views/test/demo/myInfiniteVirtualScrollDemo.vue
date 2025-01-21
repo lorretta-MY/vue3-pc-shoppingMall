@@ -1,11 +1,7 @@
 <template>
-  <el-scrollbar height="600px">
+  <el-scrollbar :height="height">
     <div class="my-infinite-list-wrap">
-      <baseVirtualScroll
-        :list="mockPageGoodsList"
-        :empty="mockPageGoodsList.length == 0 ? true : false"
-        :itemMainSize="60"
-      >
+      <baseVirtualScroll :list="mockPageGoodsList" :itemMainSize="60">
         <template #item="{ item, active }">
           <div class="card-item">
             <el-tag type="info">{{ item.desc }}</el-tag>
@@ -35,11 +31,22 @@ const route = useRoute();
 
 const { proxy: instance } = getCurrentInstance();
 
+const props = defineProps({
+  height: {
+    type: String,
+    default: "600px",
+  },
+  size: {
+    type: Number,
+    default: 10,
+  },
+});
+
 let fetchAllData = null;
 const goodsList = ref([]);
 
 const nextPage = ref(1);
-const pageSize = ref(20);
+const pageSize = ref(props.size);
 const mockRefreshKey = ref(0);
 const mockPageGoodsList = ref([]);
 
@@ -92,7 +99,6 @@ watch(
     refreshList();
   },
   {
-    // deep: true,
     immediate: true,
   }
 );
