@@ -1,15 +1,17 @@
 <template>
-  <p class="demo-title">draggable demo1</p>
-  <BaseDraggable v-model="subCategoryGoodsList" item-key="id">
-    <template #items="{ element }">
-      <span class="card-item">{{ element.name }}</span>
-    </template>
-  </BaseDraggable>
+  <div class="drag-demo-wrap">
+    <p class="demo-title">draggable demo1</p>
+    <BaseDraggable v-model="subCategoryGoodsList" item-key="id">
+      <template #items="{ element }">
+        <span class="card-item">{{ element.name }}</span>
+      </template>
+    </BaseDraggable>
 
-  <hr />
+    <hr />
 
-  <p class="demo-title">draggable demo2</p>
-  <baseDraggableSimpleDemo />
+    <p class="demo-title">draggable demo2</p>
+    <baseDraggableSimpleDemo />
+  </div>
 </template>
 
 <script setup>
@@ -43,6 +45,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.drag-demo-wrap {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .card-item {
   margin-left: 8px;
   padding: 4px 6px;

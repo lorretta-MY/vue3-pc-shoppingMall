@@ -1,5 +1,13 @@
 import { createApp } from "vue";
+
 const app = createApp(App);
+
+// ElementPlus 汉化
+import ElementPlus from "element-plus";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+app.use(ElementPlus, {
+  locale: zhCn,
+});
 
 // v-md-editor相关配置
 import VueMarkdownEditor from "@kangc/v-md-editor";
@@ -40,6 +48,10 @@ app.config.globalProperties.$copy = async (text) => {
     ElMessage.warning("复制失败: " + error.message);
   }
 };
+
+// $message 全局提示
+// const $message = ElMessage();
+// app.config.globalProperties.$message = $message;
 
 // 引入并注册自定义的权限判断指令
 import { hasPermission } from "@/directives/index";

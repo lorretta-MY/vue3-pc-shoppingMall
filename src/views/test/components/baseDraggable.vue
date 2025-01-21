@@ -6,12 +6,12 @@
     :component-data="{
       tag: 'ul',
       type: 'transition-group',
-      name: !drag ? 'draggable-flip-list' : null,
+      name: !dragging ? 'draggable-flip-list' : null,
     }"
     :class="[attrs?.class, 'draggable-list-group']"
     :animation="300"
     ghost-class="drag-ghost"
-    chosen-class="chosen"
+    chosen-class="drag-chosen"
     @start="dragging = true"
     @end="dragging = false"
   >
@@ -42,10 +42,6 @@ const dragging = ref(false);
   transition: transform 0.5s;
 }
 
-.drag-ghost {
-  opacity: 0.5;
-}
-
 .draggable-list-group-item {
   cursor: move;
   display: flex;
@@ -57,6 +53,9 @@ const dragging = ref(false);
   .anticon-holder {
     color: #999;
     margin-right: 4px;
+  }
+  &:hover {
+    background-color: #f0f0f0;
   }
 }
 </style>

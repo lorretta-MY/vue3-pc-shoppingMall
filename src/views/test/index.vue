@@ -1,6 +1,9 @@
 <template>
   <div class="test-page-wrap">
     <el-tabs type="border-card">
+      <el-tab-pane label="可筛选table">
+        <myBaseTableList />
+      </el-tab-pane>
       <el-tab-pane label="拖拽组件">
         <myDragList />
       </el-tab-pane>
@@ -36,6 +39,7 @@ import myList from "./demo/myList.vue";
 import myDragList from "./demo/myDragList.vue";
 import myInfiniteDemo from "./demo/myInfiniteDemo.vue";
 import myInfiniteVirtualScrollDemo from "./demo/myInfiniteVirtualScrollDemo.vue";
+import myBaseTableList from "./demo/myBaseTableList.vue";
 
 import { getCurrentInstance } from "vue";
 const { proxy: instance } = getCurrentInstance();
@@ -48,6 +52,7 @@ const handleCopy = (val) => {
 <style scoped lang="scss">
 .test-page-wrap {
   padding: 20px;
+  overflow: hidden;
   &::-webkit-scrollbar {
     display: none;
   }
